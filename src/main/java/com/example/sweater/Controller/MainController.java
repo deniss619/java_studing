@@ -1,4 +1,4 @@
-package com.example.sweater;
+package com.example.sweater.Controller;
 
 
 import com.example.sweater.Repository.MessageRepository;
@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @Controller
-public class GreetingController {
+public class MainController {
 
     @Autowired
     private MessageRepository messageRepository;
 
-    @GetMapping("/")
+    @GetMapping("/main")
     public String main(Map<String, Object> model) {
         Iterable<Message> messages = messageRepository.findAll();
         model.put("messages", messages);

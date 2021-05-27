@@ -2,9 +2,10 @@ package com.example.sweater.Repository;
 
 
 import org.springframework.data.repository.CrudRepository;
-import com.example.sweater.domain.Users;
+import com.example.sweater.domain.User;
 
 
-public interface UserRepository extends CrudRepository<Users, Integer> {
+public interface UserRepository extends CrudRepository<User, Integer> {
+    User findByUsername(String name);
 
 }

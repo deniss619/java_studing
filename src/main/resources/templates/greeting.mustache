@@ -5,17 +5,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-    <form method = "post" action="addUser">
+    <a href="/main">main page</a>
+    <form method = "post" action="/addUser">
         <input type="text" name="name" placeholder="Enter your name">
         <input type="text" name="email" placeholder="Enter email">
         <button type="submit">Add</button>
     </form>
-    {{#users}}
-        <div>
-            <b>{{id}}</b>
-            <span>{{name}}</span>
-            <i>{{email}}</i>
-        </div>
-    {{/users}}
 </body>
 </html>
