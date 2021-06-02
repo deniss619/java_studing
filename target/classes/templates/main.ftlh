@@ -4,11 +4,13 @@
 <@c.page>
 <div>
     <@l.logout />
+    <span><a href="/user">User list</a></span>
 </div>
-<form method = "post" action="add">
+<form method = "post" action="add" enctype="multipart/form-data">
     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     <input type="text" name="text" placeholder="Enter the message">
     <input type="text" name="tag" placeholder="tag">
+    <input type="file" name="file">
     <button type="submit">Add</button>
 </form>
 <div>Список сообщений</div>
@@ -22,6 +24,11 @@
     <span>${message.text}</span>
     <i>${message.tag}</i>
     <strong>${message.authorName}</strong>
+    <div>
+        <#if message.filename??>
+            <img src="/img/${message.filename}">
+        </#if>
+    </div>
 </div>
 <#else>
 No message
