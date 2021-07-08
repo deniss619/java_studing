@@ -30,8 +30,7 @@ public class RegistrationController {
             model.put("message", "User exists");
             return "registration";
         }
-
-        return "redirect:/login";
+        return String.format("redirect:/registrationSuccession/%s", user.getId());
     }
 
     @GetMapping("/activate/{code}")
@@ -43,6 +42,21 @@ public class RegistrationController {
             model.addAttribute("message","Activation code is not found");
         }
         return "login";
+    }
+
+    @GetMapping("/registrationSuccession/{id}")
+    public String registrationSuccession(@PathVariable Integer id, Map<String, Object> model) throws MessagingException {
+        model.put("user_id", id);
+        return "registrationSuccession";
+
+    }
+    @PostMapping("/registrationSuccession/{id}")
+    public String sendMailAgain(@PathVariable Integer id, Model model) throws MessagingException{
+        userService.sendMail(id);
+        System.out.println(id);
+        model.addAttribute("user_id", id);
+        System.out.println(id);
+        return "registrationSuccession";
     }
 
 }

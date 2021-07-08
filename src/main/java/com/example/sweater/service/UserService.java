@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 
 import javax.mail.MessagingException;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -39,19 +40,21 @@ public class UserService implements UserDetailsService {
         }
         user.setActive(false);
         user.setRoles(Collections.singleton(Role.USER));
-        user.setActivationCode(UUID.randomUUID().toString());
         userRepository.save(user);
 
         if (!StringUtils.isEmpty(user.getEmail())){
 
-            String message = String.format(
-                    "Hello, %s \n"+
-                            "Welcome to Sweater. Please, visit next link: <a href='http://localhost:8080/activate/%s'>link</a>",
-                    user.getUsername(),
-                    user.getActivationCode()
-            );
+            //sendMail(user.getId());
 
-            mailSender.send(user.getEmail(), "Activation code", message);
+
+//            String message = String.format(
+//                    "Hello, %s \n"+
+//                            "Welcome to Sweater. Please, visit next link: <a href='http://localhost:8080/activate/%s'>link</a>",
+//                    user.getUsername(),
+//                    user.getActivationCode()
+//            );
+//
+//            mailSender.send(user.getEmail(), "Activation code", message);
 
         }
 
@@ -68,5 +71,33 @@ public class UserService implements UserDetailsService {
         user.setActivationCode(null);
         userRepository.save(user);
         return true;
+    }
+
+    public void sendMail(Integer id) throws MessagingException {
+        if (userRepository.findById(id).isPresent()) {
+            User user = userRepository.findById(id).get();
+            user.setActivationCode(UUID.randomUUID().toString());
+            System.out.println(user.getUsername());
+            String message = String.format(
+                    "Hello, %s.  \n" +
+                            "Welcome to Sweater. Please, visit this: <a href='http://localhost:8080/activate/%s'>link</a>",
+                    user.getUsername(),
+                    user.getActivationCode()
+            );
+            System.out.println(message);
+            mailSender.send(user.getEmail(), "Activation code", message);
+        }
+//        Optional<User> usr = userRepository.findById(id);
+//        User user = usr.get();
+//        user.setActivationCode(UUID.randomUUID().toString());
+//        String message = String.format(
+//                "Hello, %s.  \n" +
+//                        "Welcome to Sweater. Please, visit this: <a href='http://localhost:8080/activate/%s'>link</a>",
+//                user.getUsername(),
+//                user.getActivationCode()
+//        );
+//        System.out.println(message);
+//        mailSender.send(user.getEmail(), "Activation code", message);
+
     }
 }
